@@ -3,7 +3,7 @@ const router = express.Router();
 const projectModel = require('../data/helpers/projectModel.js'); //check path
 const Actions = require('../../data/helpers/actionModel.js');  // check path
 
-const { checkProjectId, bodyValidation, bodyWhitelist,  } = require('./validation-middleware.js'); // validation middle-ware insertion point
+const { checkProjectId, bodyValidation } = require('./validation-middleware.js'); // validation middle-ware insertion point
 
 router.get('/', (req, res) => {
 
