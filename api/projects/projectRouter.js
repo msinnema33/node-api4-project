@@ -3,7 +3,7 @@ const router = express.Router();
 const projectModel = require('../data/helpers/projectModel.js'); //check path
 const Actions = require('../../data/helpers/actionModel.js');  // check path
 
-const { checkProjectId, bodyValidation, } = require('./validation-middleware.js'); // validation middle-ware insertion point
+const { checkProjectId, bodyValidation } = require('./validation-middleware.js'); // validation middle-ware insertion point
 
 router.get('/', (req, res) => {
 
@@ -33,6 +33,33 @@ router.get('/:id/actions', checkProjectId, (req, res) => {
 
 router.post('/', bodyValidation, (req, res) => {
     console.log(req.body)
-
+    
+    projectModel.insert(req.body)
+    .then(project => res.status(201).json(project))
+    .catch(err => {
+        console.log("projectRouter POS 500 error:", err)
+        res.status(500).json({ message: err})
+    })
 })
 
+router.put('/:id', checkProjectId, (req, res) => {
+    projectModel.update(id, body)
+    .then(() => {
+        projectModel.get(id)
+        .then((project) => {
+            res.status(200).json(project)
+        })
+    })
+    .catch(err => res.status(500).json({ message: err}))
+})
+
+router.delete('/:id', checkProjectId, (req, res) => {
+    projectModel.remove(req.params.id)
+    .then(() => res.status(204).end())
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ message: err})
+    })
+});
+
+module.exports = router;
